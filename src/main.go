@@ -4,17 +4,14 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+var Server *fiber.App
+
 func main() {
-	// config := database.Config{}
-
-	// secureDB, err := database.InitDB(config)
-
-	// mainDB, err := database.InitDB(config)
 
 	// Initialize a new Fiber app
-	app := fiber.New()
+	Server = fiber.New()
 
 	// Start the server on port 3000
-	app.Listen(":3000")
+	Server.Listen(":3000")
 
 }
