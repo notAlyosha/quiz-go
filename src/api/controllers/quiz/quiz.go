@@ -1,35 +1,42 @@
-package quiz
+package quizHandler
 
-import "github.com/gofiber/fiber"
+import "github.com/gofiber/fiber/v2"
 
-func Create(ctx *fiber.Ctx) {
+func Create(ctx *fiber.Ctx) error {
+	return nil
+}
+
+func Update(ctx *fiber.Ctx) error {
+	return nil
 
 }
 
-func Update(ctx *fiber.Ctx) {
+func Delete(ctx *fiber.Ctx) error {
+	return nil
 
 }
 
-func Delete(ctx *fiber.Ctx) {
+func GetAll(ctx *fiber.Ctx) error {
+	return nil
 
 }
 
-func GetAll(ctx *fiber.Ctx) {
+func GetById(ctx *fiber.Ctx) error {
+	return nil
 
 }
 
-func GetById(ctx *fiber.Ctx) {
+func GetByGroupId(ctx *fiber.Ctx) error {
+	return nil
 
 }
 
-func GetByGroupId(ctx *fiber.Ctx) {
+func GetByUserId(ctx *fiber.Ctx) error {
+	return nil
 
 }
 
-func GetByUserId(ctx *fiber.Ctx) {
-
-}
-
-func GetByRoleId(ctx *fiber.Ctx) {
+func GetByRoleId(ctx *fiber.Ctx) error {
+	return nil
 
 }

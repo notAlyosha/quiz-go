@@ -2,16 +2,19 @@ package main
 
 import (
 	"github.com/gofiber/fiber/v2"
+	router "github.com/notAlyosha/quiz-go/api/routes/quiz"
 )
-
-var Server *fiber.App
 
 func main() {
 
 	// Initialize a new Fiber app
-	Server = fiber.New()
+	app := fiber.New()
 
+	api := app.Group("/api")
+	{
+		router.SetupQuizRouter(app)
+	}
 	// Start the server on port 3000
-	Server.Listen(":3000")
+	app.Listen(":3000")
 
 }
