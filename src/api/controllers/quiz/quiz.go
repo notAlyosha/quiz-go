@@ -3,7 +3,7 @@ package quizHandler
 import "github.com/gofiber/fiber/v2"
 
 func Create(ctx *fiber.Ctx) error {
-	return nil
+	return ctx.SendString("It works! Yay")
 }
 
 func Update(ctx *fiber.Ctx) error {

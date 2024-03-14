@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/gofiber/fiber/v2"
-	router "github.com/notAlyosha/quiz-go/api/routes/quiz"
+	router "github.com/notAlyosha/quiz-go/api/routes"
 )
 
 func main() {
@@ -11,10 +11,13 @@ func main() {
 	app := fiber.New()
 
 	api := app.Group("/api")
-	{
-		router.SetupQuizRouter(app)
-	}
+
+	router.SetupQuizRouter(api)
+	router.SetupChatRouter(api)
+	router.SetupUserRouter(api)
+	router.SetupGroupRouter(api)
+
 	// Start the server on port 3000
-	app.Listen(":3000")
+	app.Listen(":8080")
 
 }
