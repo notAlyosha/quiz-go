@@ -13,7 +13,7 @@ func SetupQuizRouter(api fiber.Router) {
 	api.Get("/quiz/role/:fid", quizHandler.GetByRoleId)
 
 	api.Post("/quiz/add", quizHandler.Create)
-	api.Post("/quiz/update/:fid", quizHandler.Update)
+	api.Patch("/quiz/update/:fid", quizHandler.Update)
 	api.Post("/quiz/delete/:fid", quizHandler.Delete)
 
 }

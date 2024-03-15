@@ -7,7 +7,7 @@ import (
 
 func SetupUserRouter(api fiber.Router) {
 	api.Post("/user/add", userHandler.Create)
-	api.Post("/user/update/:fid", userHandler.Update)
+	api.Patch("/user/update/:fid", userHandler.Update)
 	api.Post("/user/delete/:fid", userHandler.Delete)
 
 	api.Get("/user", userHandler.GetAll)

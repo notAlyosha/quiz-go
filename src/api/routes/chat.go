@@ -7,7 +7,7 @@ import (
 
 func SetupChatRouter(api fiber.Router) {
 	api.Post("/chat/add", chatHandler.Create)
-	api.Post("/chat/update/:fid", chatHandler.Update)
+	api.Patch("/chat/update/:fid", chatHandler.Update)
 	api.Post("/chat/delete/:fid", chatHandler.Delete)
 
 	api.Get("/chat", chatHandler.GetAll)
