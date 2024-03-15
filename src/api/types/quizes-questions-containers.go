@@ -1,13 +1,18 @@
 package types
 
 type QuizesQuestionsContainers struct {
-	ID     int `gorm: "primaryKey;autoIncrement;not null"`
-	Quizes []Quiz
-
+	ID            int
+	Quizes        []Quiz
 	QuestionTypes QuestionTypes
-	QuestionText  string `gorm: "not null"`
+	QuestionText  string
 	PictureURL    *string
+	IsAdditional  bool
+	IsDeleted     bool
 
-	IsAdditional bool
-	IsDeleted    bool `gorm: "default:false"`
+	ClosedQuestionOptions      []ClosedQuestionOptions
+	SequencedQuestionOptions   []SequencedQuestionOption
+	PairedAnswerQuestionOption []PairedAnswerQuestionOption
+	PartsInsertQuestionOption  []PartsInsertQuestionOption
+	GeoWithCheckingOption      []GeoWithCheckingOption
+	OpenedQuestion             []OpenedQuestion
 }

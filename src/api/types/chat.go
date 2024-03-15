@@ -1,14 +1,14 @@
 package types
 
 type Chat struct {
-	ID              int  `gorm: "primaryKey;autoIncrement;not null"`
-	User            User `gorm: "foreignkey:AdministratorID"`
+	ID              int
+	User            []User
 	AdministratorID int
 	Description     *string
 	InviteLink      *string
 	ThemeName       *string
 
-	IsGroupChat bool `gorm: "not null"`
+	IsGroupChat bool
 
-	IsDeleted bool `gorm: "default:false"`
+	IsDeleted bool
 }

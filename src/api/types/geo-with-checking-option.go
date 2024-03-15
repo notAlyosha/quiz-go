@@ -1,18 +1,18 @@
 package types
 
 type GeoWithCheckingOption struct {
-	ID int `gorm: "primaryKey;autoIncrement;not null"`
+	ID int
 
-	Question   QuizesQuestionsContainers `gorm: "foreignkey:QuestionID"`
+	Question   QuizesQuestionsContainers
 	QuestionID int
 
-	Langitude string `gorm: "not null"`
-	Lantitude string `gorm: "not null"`
+	Langitude string
+	Lantitude string
 
-	IsPlaceVisited bool `gorm: default:false"`
+	IsPlaceVisited bool
 
-	CheckQuestionText   string `gorm: "not null"`
-	CheckQuestionAnswer string `gorm: "not null"`
+	CheckQuestionText   string
+	CheckQuestionAnswer string
 
-	IsDeleted bool `gorm: "default:false"`
+	IsDeleted bool
 }

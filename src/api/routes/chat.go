@@ -1,4 +1,4 @@
-package chatRouter
+package router
 
 import (
 	"github.com/gofiber/fiber/v2"
@@ -7,12 +7,12 @@ import (
 
 func SetupChatRouter(api fiber.Router) {
 	api.Post("/chat/add", chatHandler.Create)
-	api.Post("/chat/update/:id", chatHandler.Update)
-	api.Post("/chat/delete/:id", chatHandler.Delete)
+	api.Post("/chat/update/:fid", chatHandler.Update)
+	api.Post("/chat/delete/:fid", chatHandler.Delete)
 
 	api.Get("/chat", chatHandler.GetAll)
-	api.Get("/chat/:id", chatHandler.GetById)
-	api.Get("/chat/group/:id", chatHandler.GetGroupById)
-	api.Get("/chat/user/:id", chatHandler.GetByUserId)
-	api.Get("/chat/role/:id", chatHandler.GetByRoleId)
+	api.Get("/chat/:fid", chatHandler.GetById)
+	api.Get("/chat/group/:fid", chatHandler.GetGroupById)
+	api.Get("/chat/user/:fid", chatHandler.GetByUserId)
+	api.Get("/chat/role/:fid", chatHandler.GetByRoleId)
 }

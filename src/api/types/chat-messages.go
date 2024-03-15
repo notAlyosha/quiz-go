@@ -3,10 +3,13 @@ package types
 import "time"
 
 type ChatMessages struct {
-	ID int `gorm: "primaryKey;autoIncrement;not null"`
+	ID int
 
-	Chat Chat
-	User User
+	Chat   Chat
+	ChatID int
+
+	User   User
+	UserID int
 
 	MessageDateTime time.Time
 
@@ -14,5 +17,5 @@ type ChatMessages struct {
 
 	FileURL         *string
 	IsDeletedByUser bool
-	IsDeleted       bool `gorm: "default:false"`
+	IsDeleted       bool
 }

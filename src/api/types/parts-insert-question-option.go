@@ -1,14 +1,14 @@
 package types
 
 type PartsInsertQuestionOption struct {
-	ID int `gorm: "primaryKey;autoIncrement;not null"`
+	ID int
 
-	Question   QuizesQuestionsContainers `gorm: "foreignkey:QuestionID"`
+	Question   QuizesQuestionsContainers
 	QuestionID int
 
-	PartText string `gorm: "not null"`
+	PartText string
 
 	IsHidden bool
 
-	IsDeleted bool `gorm: "default:false"`
+	IsDeleted bool
 }

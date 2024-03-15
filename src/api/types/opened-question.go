@@ -1,12 +1,12 @@
 package types
 
 type OpenedQuestion struct {
-	ID int `gorm: "primaryKey;autoIncrement;not null"`
+	ID int
 
-	Question   QuizesQuestionsContainers `gorm: "foreignkey:QuestionID"`
+	Question   QuizesQuestionsContainers
 	QuestionID int
 
-	AnswerText string `gorm: "not null"`
+	AnswerText string
 
-	IsDeleted bool `gorm: "default:false"`
+	IsDeleted bool
 }
