@@ -7,7 +7,7 @@ import (
 
 func SetupOrderRoutes(api fiber.Router) {
 	api.Post("order/add", orderHandler.Create)
-	api.Patch("/order/update", orderHandler.Update)
+	api.Patch("/order/update/:id", orderHandler.Update)
 	api.Get("/order", orderHandler.GetAll)
 	api.Get("/order/:fid", orderHandler.GetByID)
 	api.Get("/order/user/:fid", orderHandler.GetByUserID)

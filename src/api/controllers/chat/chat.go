@@ -26,17 +26,7 @@ func GetById(ctx *fiber.Ctx) error {
 
 }
 
-func GetGroupById(ctx *fiber.Ctx) error {
-	return nil
-
-}
-
 func GetByUserId(ctx *fiber.Ctx) error {
-	return nil
-
-}
-
-func GetByRoleId(ctx *fiber.Ctx) error {
 	return nil
 
 }

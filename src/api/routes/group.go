@@ -8,8 +8,8 @@ import (
 func SetupGroupRouter(api fiber.Router) {
 	api.Post("/group/add", groupHandler.Create)
 	api.Patch("/group/update/:fid", groupHandler.Update)
-	api.Post("/group/delete/:fid", groupHandler.Delete)
+	api.Delete("/group/delete/:fid", groupHandler.Delete)
 
-	api.Get("/group/", groupHandler.GetAll)
+	api.Get("/group", groupHandler.GetAll)
 	api.Get("/group/:fid", groupHandler.GetById)
 }
