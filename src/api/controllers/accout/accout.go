@@ -1,4 +1,4 @@
-package enterHandler
+package accoutHandler
 
 import "github.com/gofiber/fiber/v2"
 

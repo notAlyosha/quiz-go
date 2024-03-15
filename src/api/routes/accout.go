@@ -2,7 +2,7 @@ package router
 
 import (
 	"github.com/gofiber/fiber/v2"
-	enterHandler "github.com/notAlyosha/quiz-go/api/controllers/enter"
+	enterHandler "github.com/notAlyosha/quiz-go/api/controllers/accout"
 )
 
 func SetupEnterRouter(api fiber.Router) {
