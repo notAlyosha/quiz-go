@@ -1,4 +1,4 @@
-package types
+package quesiontype
 
 type SequencedQuestionOption struct {
 	ID         int
