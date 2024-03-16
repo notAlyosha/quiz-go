@@ -6,13 +6,12 @@ import (
 )
 
 func SetupQuizRouter(api fiber.Router) {
+	api.Post("/quiz/add", quizHandler.Create)
+	api.Patch("/quiz/update/:fid", quizHandler.Update)
+	api.Delete("/quiz/delete/:fid", quizHandler.Delete)
 	api.Get("/quiz/", quizHandler.GetAll)
 	api.Get("/quiz/:fid", quizHandler.GetById)
 	api.Get("/quiz/group/:fid", quizHandler.GetByGroupId)
 	api.Get("/quiz/user/:fid", quizHandler.GetByUserId)
-
-	api.Post("/quiz/add", quizHandler.Create)
-	api.Patch("/quiz/update/:fid", quizHandler.Update)
-	api.Delete("/quiz/delete/:fid", quizHandler.Delete)
 
 }
