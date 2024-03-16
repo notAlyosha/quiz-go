@@ -1,14 +1,9 @@
 package types
 
 type PartsInsertQuestionOption struct {
-	ID int
-
-	Question   QuizesQuestionsContainers
+	ID         int
 	QuestionID int
-
-	PartText string
-
-	IsHidden bool
-
-	IsDeleted bool
+	PartText   string
+	IsHidden   bool
+	IsDeleted  bool
 }

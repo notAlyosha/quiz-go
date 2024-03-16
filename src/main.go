@@ -6,16 +6,17 @@ import (
 )
 
 func main() {
-
-	// Initialize a new Fiber app
+	//Initialize a new Fiber app
 	app := fiber.New()
 
 	api := app.Group("/api")
 
-	router.SetupQuizRouter(api)
-	router.SetupChatRouter(api)
+	router.SetupAccountRouter(api)
 	router.SetupUserRouter(api)
+	router.SetupQuizRouter(api)
 	router.SetupGroupRouter(api)
+	router.SetupOrderRoutes(api)
+	router.SetupChatRouter(api)
 
 	// Start the server on port 3000
 	app.Listen(":8080")

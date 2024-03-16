@@ -1,6 +1,8 @@
 package userHandler
 
-import "github.com/gofiber/fiber/v2"
+import (
+	"github.com/gofiber/fiber/v2"
+)
 
 func Create(ctx *fiber.Ctx) error {
 	return nil

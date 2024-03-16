@@ -1,12 +1,8 @@
 package types
 
 type OpenedQuestion struct {
-	ID int
-
-	Question   QuizesQuestionsContainers
+	ID         int
 	QuestionID int
-
 	AnswerText string
-
-	IsDeleted bool
+	IsDeleted  bool
 }

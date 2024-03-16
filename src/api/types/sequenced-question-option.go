@@ -1,12 +1,8 @@
 package types
 
 type SequencedQuestionOption struct {
-	ID int
-
-	Question   QuizesQuestionsContainers
+	ID         int
 	QuestionID int
-
 	OptionText string
-
-	IsDeleted bool
+	IsDeleted  bool
 }

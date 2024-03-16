@@ -5,8 +5,7 @@ import (
 	enterHandler "github.com/notAlyosha/quiz-go/api/controllers/accout"
 )
 
-func SetupEnterRouter(api fiber.Router) {
-	api.Get("/enter/signIn", enterHandler.SignIn)
+func SetupAccountRouter(api fiber.Router) {
+	api.Post("/enter/signIn", enterHandler.SignIn)
 	api.Post("/enter/signUp", enterHandler.SignUp)
-	api.Post("/enter/registration", enterHandler.Registration)
 }
