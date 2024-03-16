@@ -1,4 +1,4 @@
-package types
+package quesionType
 
 type PartsInsertQuestionOption struct {
 	ID         int

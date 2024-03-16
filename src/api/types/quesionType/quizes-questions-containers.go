@@ -1,4 +1,4 @@
-package types
+package quesionType
 
 type QuizesQuestionsContainers struct {
 	ID           int

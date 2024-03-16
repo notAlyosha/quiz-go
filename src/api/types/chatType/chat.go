@@ -1,4 +1,4 @@
-package types
+package chatType
 
 type Chat struct {
 	ID              int
