@@ -2,7 +2,7 @@ package router
 
 import (
 	"github.com/gofiber/fiber/v2"
-	orderHandler "github.com/notAlyosha/quiz-go/api/controllers/order"
+	orderHandler "github.com/notAlyosha/quiz-go/api/handlers/order"
 )
 
 func SetupOrderRoutes(api fiber.Router) {

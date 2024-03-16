@@ -2,7 +2,7 @@ package router
 
 import (
 	"github.com/gofiber/fiber/v2"
-	sessionHandler "github.com/notAlyosha/quiz-go/api/controllers/session"
+	sessionHandler "github.com/notAlyosha/quiz-go/api/handlers/session"
 )
 
 func SetupSessiontRoutes(api fiber.Router) {

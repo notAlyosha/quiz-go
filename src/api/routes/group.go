@@ -2,7 +2,7 @@ package router
 
 import (
 	"github.com/gofiber/fiber/v2"
-	groupHandler "github.com/notAlyosha/quiz-go/api/controllers/group"
+	groupHandler "github.com/notAlyosha/quiz-go/api/handlers/group"
 )
 
 func SetupGroupRouter(api fiber.Router) {

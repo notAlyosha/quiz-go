@@ -2,7 +2,7 @@ package router
 
 import (
 	"github.com/gofiber/fiber/v2"
-	quizHandler "github.com/notAlyosha/quiz-go/api/controllers/quiz"
+	quizHandler "github.com/notAlyosha/quiz-go/api/handlers/quiz"
 )
 
 func SetupQuizRouter(api fiber.Router) {

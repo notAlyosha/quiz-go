@@ -7,3 +7,7 @@ type Config struct {
 	DBHost     string
 	DBPort     string
 }
+
+func InitDBConnection(c *Config) {
+
+}

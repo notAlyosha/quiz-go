@@ -2,7 +2,7 @@ package router
 
 import (
 	"github.com/gofiber/fiber/v2"
-	chatHandler "github.com/notAlyosha/quiz-go/api/controllers/chat"
+	chatHandler "github.com/notAlyosha/quiz-go/api/handlers/chat"
 )
 
 func SetupChatRouter(api fiber.Router) {

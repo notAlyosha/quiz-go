@@ -2,7 +2,7 @@ package router
 
 import (
 	"github.com/gofiber/fiber/v2"
-	enterHandler "github.com/notAlyosha/quiz-go/api/controllers/accout"
+	enterHandler "github.com/notAlyosha/quiz-go/api/handlers/accout"
 )
 
 func SetupAccountRouter(api fiber.Router) {
