@@ -1,12 +1,7 @@
 package main
 
 import (
-	"crypto/rand"
-	"crypto/rsa"
-
-	jwtware "github.com/gofiber/contrib/jwt"
 	"github.com/gofiber/fiber/v2"
-	"github.com/notAlyosha/quiz-go/api/middlewares/auth"
 	router "github.com/notAlyosha/quiz-go/api/routes"
 )
 
@@ -14,10 +9,10 @@ func main() {
 	//Initialize a new Fiber app
 	app := fiber.New()
 
-	privateKey, err := rsa.GenerateKey(rand.Reader, 2048)
-	if err != nil {
-		panic(err)
-	}
+	// privateKey, err := rsa.GenerateKey(rand.Reader, 2048)
+	// if err != nil {
+	// 	panic(err)
+	// }
 
 	api := app.Group("/api")
 
@@ -25,14 +20,14 @@ func main() {
 	router.SetupAccountRouter(api)
 
 	// JWT Middleware
-	app.Use(jwtware.New(jwtware.Config{
-		SigningKey: jwtware.SigningKey{
-			JWTAlg: jwtware.RS256,
-			Key:    privateKey.Public(),
-		},
-	}))
+	// app.Use(jwtware.New(jwtware.Config{
+	// 	SigningKey: jwtware.SigningKey{
+	// 		JWTAlg: jwtware.RS256,
+	// 		Key:    privateKey.Public(),
+	// 	},
+	// }))
 
-	app.Use(auth.JwtMiddleware)
+	// app.Use(auth.JwtMiddleware)
 
 	// authentification required
 	router.SetupUserRouter(api)

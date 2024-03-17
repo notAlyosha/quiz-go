@@ -6,5 +6,4 @@ type SessionStudent struct {
 	AdditionalPoints int
 	Is_bought        bool
 	IsDeleted        bool
-	SessionStatus    SessionStatus
 }
