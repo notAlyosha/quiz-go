@@ -1,15 +1,18 @@
+CREATE DATABASE IF NOT EXISTS quiz_app_data DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
 CREATE USER IF NOT EXISTS 'web_quiz'@'%' IDENTIFIED BY 'password_DEV_testing_0';
 GRANT SELECT, INSERT, UPDATE ON quiz_app_data.* TO 'web_quiz'@'%';
 REVOKE ALL ON quiz_app_data.history FROM 'web_quiz'@'%';
 GRANT SELECT ON quiz_app_data.history TO 'web_quiz'@'%';
+
+CREATE DATABASE IF NOT EXISTS quiz_app_data_sequrity_data DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
+CREATE USER IF NOT EXISTS 'web_quiz_sequrity_640'@'127.0.0.1' IDENTIFIED BY 'enought_strong_password_here';
+GRANT SELECT, INSERT, UPDATE ON web_quiz_sequrity_personal_data.* TO 'web_quiz_sequrity_640'@'127.0.0.1';
+
 FLUSH PRIVILEGES;
 
--- TODO: understatd, how to split users and their privileges between different data bases
--- CREATE DATABASE IF NOT EXISTS 'quiz_app_data_sequrity_data' DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
--- CREATE USER IF NOT EXISTS 'web_quiz_sequrity_600' IDENTIFIED BY 'enought_strong_password_here';
--- GRANT SELECT, INSERT, UPDATE ON 'web_quiz_sequrity_personal_data'.* TO 'web_quiz_sequrity_600'*
+DROP DATABASE IF EXISTS quiz_app_data;
+DROP DATABASE IF EXISTS quiz_app_data_sequrity_data;
 
-CREATE DATABASE IF NOT EXISTS quiz_app_data DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
 CREATE TABLE IF NOT EXISTS quiz_app_data.application_settings
 (
     id INT NOT NULL AUTO_INCREMENT,
@@ -29,65 +32,6 @@ CREATE TABLE IF NOT EXISTS quiz_app_data.users
     is_deleted BOOLEAN DEFAULT FALSE,
     
     PRIMARY KEY(id)
-);
-
-CREATE TABLE IF NOT EXISTS quiz_app_data.entering_attemts
-(
-    id INT NOT NULL AUTO_INCREMENT,
-    user_id INT NOT NULL,
-    entering_datetime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    is_correct BOOLEAN NOT NULL DEFAULT FALSE,
-    is_deleted BOOLEAN NOT NULL DEFAULT FALSE,
-
-    PRIMARY KEY(id),
-    FOREIGN KEY(user_id)
-    REFERENCES quiz_app_data.users(id)
-    ON UPDATE CASCADE ON DELETE CASCADE
-);
-
-CREATE TABLE IF NOT EXISTS quiz_app_data.users_passwords_history
-(
-    id INT NOT NULL AUTO_INCREMENT,
-    user_id INT NOT NULL,
-    value BINARY(255) NOT NULL,
-    entering_datetime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    is_deleted BOOLEAN NOT NULL DEFAULT FALSE,
-
-    PRIMARY KEY(id),
-    FOREIGN KEY(user_id)
-    REFERENCES quiz_app_data.users(id)
-    ON UPDATE CASCADE ON DELETE CASCADE
-);
-
-CREATE TABLE IF NOT EXISTS quiz_app_data.profiles
-(
-    id INT NOT NULL AUTO_INCREMENT,
-    user_id INT NOT NULL,
-    login VARCHAR(50) NOT NULL UNIQUE,
-    salt BINARY(255) NOT NULL,
-    name VARCHAR(100) NULL,
-    email VARCHAR(100) NULL UNIQUE,
-    phone VARCHAR(15) NULL UNIQUE,
-    adding_datetime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    is_deleted BOOLEAN NOT NULL DEFAULT FALSE,
-
-    PRIMARY KEY(id),
-    FOREIGN KEY(user_id)
-    REFERENCES quiz_app_data.users(id)
-    ON UPDATE CASCADE ON DELETE CASCADE
-);
-
-CREATE TABLE IF NOT EXISTS quiz_app_data.students_wallets
-(
-    id INT NOT NULL AUTO_INCREMENT,
-    user_id INT NOT NULL,
-    points INT NOT NULL DEFAULT 0,
-    is_deleted BOOLEAN NOT NULL DEFAULT FALSE,
-
-    PRIMARY KEY(id),
-    FOREIGN KEY(user_id)
-    REFERENCES quiz_app_data.users(id)
-    ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS quiz_app_data.subjects
@@ -552,7 +496,61 @@ CREATE TABLE IF NOT EXISTS quiz_app_data.history
     ON UPDATE CASCADE ON DELETE CASCADE
 );
 
--- REVOKE ALL ON quiz_app_data.* FROM 'web_quiz'@'%';
--- FLUSH PRIVILEGES;
--- DROP USER IF EXISTS 'web_quiz'@'%';
--- DROP DATABASE IF EXISTS quiz_app_data;
+CREATE TABLE IF NOT EXISTS quiz_app_data_sequrity_data.entering_attemts
+(
+    id INT NOT NULL AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    entering_datetime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    is_correct BOOLEAN NOT NULL DEFAULT FALSE,
+    is_deleted BOOLEAN NOT NULL DEFAULT FALSE,
+
+    PRIMARY KEY(id),
+    FOREIGN KEY(user_id)
+    REFERENCES quiz_app_data.users(id)
+    ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS quiz_app_data_sequrity_data.users_passwords_history
+(
+    id INT NOT NULL AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    value BINARY(255) NOT NULL,
+    entering_datetime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    is_deleted BOOLEAN NOT NULL DEFAULT FALSE,
+
+    PRIMARY KEY(id),
+    FOREIGN KEY(user_id)
+    REFERENCES quiz_app_data.users(id)
+    ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS quiz_app_data_sequrity_data.profiles
+(
+    id INT NOT NULL AUTO_INCREMENT,
+    user_id INT NOT NULL UNIQUE,
+    login VARCHAR(50) NOT NULL UNIQUE,
+    salt BINARY(255) NOT NULL,
+    name VARCHAR(100) NULL,
+    email VARCHAR(100) NULL UNIQUE,
+    phone VARCHAR(15) NULL UNIQUE,
+    adding_datetime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    is_deleted BOOLEAN NOT NULL DEFAULT FALSE,
+
+    PRIMARY KEY(id),
+    FOREIGN KEY profiles(user_id)
+    REFERENCES quiz_app_data.users(id)
+    ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS quiz_app_data_sequrity_data.students_wallets
+(
+    id INT NOT NULL AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    points INT NOT NULL DEFAULT 0,
+    is_deleted BOOLEAN NOT NULL DEFAULT FALSE,
+
+    PRIMARY KEY(id),
+    FOREIGN KEY(user_id)
+    REFERENCES quiz_app_data.users(id)
+    ON UPDATE CASCADE ON DELETE CASCADE
+);
