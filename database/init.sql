@@ -16,8 +16,8 @@ DROP DATABASE IF EXISTS quiz_app_data_sequrity_data;
 CREATE TABLE IF NOT EXISTS quiz_app_data.application_settings
 (
     id INT NOT NULL AUTO_INCREMENT,
-    name VARCHAR(100) NOT NULL UNIQUE,
-    value VARCHAR(100) NOT NULL,
+    name VARCHAR NOT NULL UNIQUE,
+    value VARCHAR NOT NULL,
     is_deleted BOOLEAN DEFAULT FALSE,
     
     PRIMARY KEY(id)
@@ -26,9 +26,9 @@ CREATE TABLE IF NOT EXISTS quiz_app_data.application_settings
 CREATE TABLE IF NOT EXISTS quiz_app_data.users
 (
     id INT NOT NULL AUTO_INCREMENT,
-    front_id VARCHAR(50) NOT NULL UNIQUE,
-    role VARCHAR(50) NOT NULL,
-    logo_url VARCHAR(100) NULL,
+    front_id VARCHAR NOT NULL UNIQUE,
+    role VARCHAR NOT NULL,
+    logo_url VARCHAR NULL,
     is_deleted BOOLEAN DEFAULT FALSE,
     
     PRIMARY KEY(id)
@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS quiz_app_data.users
 CREATE TABLE IF NOT EXISTS quiz_app_data.subjects
 (
     id INT NOT NULL AUTO_INCREMENT,
-    name VARCHAR(50) NOT NULL UNIQUE,
+    name VARCHAR NOT NULL UNIQUE,
     is_deleted BOOLEAN NOT NULL DEFAULT FALSE,
 
     PRIMARY KEY(id)
@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS quiz_app_data.subjects
 CREATE TABLE IF NOT EXISTS quiz_app_data.groups
 (
     id INT NOT NULL AUTO_INCREMENT,
-    name VARCHAR(20),
+    name VARCHAR,
     is_deleted BOOLEAN DEFAULT FALSE,
 
     CHECK(name IS NOT NULL),
@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS quiz_app_data.groups
 CREATE TABLE IF NOT EXISTS quiz_app_data.sessions_statuses
 (
     id INT NOT NULL AUTO_INCREMENT,
-    status VARCHAR(50) NOT NULL UNIQUE,
+    status VARCHAR NOT NULL UNIQUE,
     is_deleted BOOLEAN NOT NULL DEFAULT FALSE,
 
     PRIMARY KEY(id)
@@ -68,9 +68,9 @@ CREATE TABLE IF NOT EXISTS quiz_app_data.sessions_statuses
 CREATE TABLE IF NOT EXISTS quiz_app_data.questions_types
 ( 
     id INT NOT NULL AUTO_INCREMENT,
-    name VARCHAR(30),
-    durability int DEFAULT 0,
-    points int,
+    name VARCHAR,
+    durability INT DEFAULT 0,
+    points INT,
     is_deleted BOOLEAN DEFAULT FALSE,
 
     CHECK (name IS NOT NULL),
@@ -127,13 +127,13 @@ CREATE TABLE IF NOT EXISTS quiz_app_data.groups_teachers
 
 CREATE TABLE IF NOT EXISTS quiz_app_data.quizes
 (
-    id int NOT NULL AUTO_INCREMENT,
-    subject_id int,
-    name VARCHAR(50),
-    description VARCHAR(200),
+    id INT NOT NULL AUTO_INCREMENT,
+    subject_id INT,
+    name VARCHAR,
+    description VARCHAR,
     summary_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    max_points VARCHAR(100),
-    max_add_points VARCHAR(10),
+    max_points VARCHAR,
+    max_add_points VARCHAR,
     is_deleted BOOLEAN DEFAULT FALSE,
 
 
@@ -173,10 +173,10 @@ CREATE TABLE IF NOT EXISTS quiz_app_data.quizes_teachers
 CREATE TABLE IF NOT EXISTS quiz_app_data.quizes_questions_containers
 (
     id INT NOT NULL AUTO_INCREMENT,
-    quiz_id int,
-    question_type_id int,
-    question_text VARCHAR(200),
-    picture_URI VARCHAR(200),
+    quiz_id INT,
+    question_type_id INT,
+    question_text VARCHAR,
+    picture_URI VARCHAR,
     is_additional BOOLEAN DEFAULT FALSE,
     is_deleted BOOLEAN DEFAULT FALSE,
 
@@ -200,8 +200,8 @@ CREATE TABLE IF NOT EXISTS quiz_app_data.quizes_questions_containers
 CREATE TABLE IF NOT EXISTS quiz_app_data.paired_answers_questions_options
 (
     id INT NOT NULL AUTO_INCREMENT,
-    question_id int,
-    option_text VARCHAR(50),
+    question_id INT,
+    option_text VARCHAR,
     is_deleted BOOLEAN DEFAULT FALSE,
 
     CHECK (question_id IS NOT NULL),
@@ -218,8 +218,8 @@ CREATE TABLE IF NOT EXISTS quiz_app_data.paired_answers_questions_options
 CREATE TABLE IF NOT EXISTS quiz_app_data.paired_answers_questions_options_links
 (
     id INT NOT NULL AUTO_INCREMENT,
-    left_side_id int,
-    right_side_id int,
+    left_side_id INT,
+    right_side_id INT,
     is_deleted BOOLEAN DEFAULT FALSE,
 
     CHECK (left_side_id IS NOT NULL),
@@ -238,8 +238,8 @@ CREATE TABLE IF NOT EXISTS quiz_app_data.paired_answers_questions_options_links
 CREATE TABLE IF NOT EXISTS quiz_app_data.closed_questions_options
 (
     id INT NOT NULL AUTO_INCREMENT,
-    question_id int,
-    option_text VARCHAR(100),
+    question_id INT,
+    option_text VARCHAR,
     is_correct_option  BOOLEAN DEFAULT FALSE, 
     is_deleted BOOLEAN DEFAULT FALSE,
 
@@ -257,8 +257,8 @@ CREATE TABLE IF NOT EXISTS quiz_app_data.closed_questions_options
 CREATE TABLE IF NOT EXISTS quiz_app_data.sequenced_question_options
 (
     id INT NOT NULL AUTO_INCREMENT,
-    question_id int,
-    option_text VARCHAR(30),
+    question_id INT,
+    option_text VARCHAR,
     is_deleted BOOLEAN DEFAULT FALSE,
 
     CHECK (question_id IS NOT NULL),
@@ -274,8 +274,8 @@ CREATE TABLE IF NOT EXISTS quiz_app_data.sequenced_question_options
 CREATE TABLE IF NOT EXISTS quiz_app_data.parts_insert_questions_options
 (
     id INT NOT NULL AUTO_INCREMENT,
-    question_id int,
-    part_text VARCHAR(200),
+    question_id INT,
+    part_text VARCHAR,
     is_hidden BOOLEAN DEFAULT FALSE,
     is_deleted BOOLEAN DEFAULT FALSE,
     
@@ -293,12 +293,12 @@ CREATE TABLE IF NOT EXISTS quiz_app_data.parts_insert_questions_options
 CREATE TABLE IF NOT EXISTS quiz_app_data.geo_with_checking_questions
 (
     id INT NOT NULL AUTO_INCREMENT,
-    question_id int,
-    longitude int,
-    lantitude int,
+    question_id INT,
+    longitude INT,
+    lantitude INT,
     is_place_visited BOOLEAN DEFAULT FALSE,
-    check_q_text VARCHAR(200),
-    check_q_answer VARCHAR(200),
+    check_q_text VARCHAR,
+    check_q_answer VARCHAR,
     is_deleted BOOLEAN DEFAULT FALSE,
     
     CHECK (question_id IS NOT NULL),
@@ -320,8 +320,8 @@ CREATE TABLE IF NOT EXISTS quiz_app_data.geo_with_checking_questions
 CREATE TABLE IF NOT EXISTS quiz_app_data.opened_question
 (
     id INT NOT NULL AUTO_INCREMENT,
-    question_id int,
-    answer_text VARCHAR(200),
+    question_id INT,
+    answer_text VARCHAR,
     is_deleted BOOLEAN DEFAULT FALSE,
 
     CHECK (question_id IS NOT NULL),
@@ -413,9 +413,9 @@ CREATE TABLE IF NOT EXISTS quiz_app_data.chats
 (
     id INT NOT NULL AUTO_INCREMENT,
     chat_administrator_id INT NULL,
-    description TEXT(100) NULL,
-    invite_link TEXT(300) NULL,
-    theme_name TEXT(100) NULL,
+    description VARCHAR NULL,
+    invite_link VARCHAR NULL,
+    theme_name VARCHAR NULL,
     is_group_chat BOOLEAN NOT NULL DEFAULT FALSE,
     is_deleted BOOLEAN NOT NULL DEFAULT FALSE,
 
@@ -448,8 +448,8 @@ CREATE TABLE IF NOT EXISTS quiz_app_data.chats_messages
     chat_id INT NOT NULL,
     user_id INT NOT NULL,
     message_datetime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    message_text TEXT(500) NULL,
-    file_url TEXT(300) NULL,
+    message_text VARCHAR NULL,
+    file_url VARCHAR NULL,
     is_deleted_by_chat_user BOOLEAN NOT NULL DEFAULT FALSE,
     is_deleted BOOLEAN NOT NULL DEFAULT FALSE,
 
@@ -482,11 +482,11 @@ CREATE TABLE IF NOT EXISTS quiz_app_data.history
 (
     id INT NOT NULL AUTO_INCREMENT,
     user_id INT NOT NULL,
-    table_name VARCHAR(100) NOT NULL,
-    column_name VARCHAR(100) NOT NULL,
+    table_name VARCHAR NOT NULL,
+    column_name VARCHAR NOT NULL,
     row_id INT NOT NULL,
-    old_value VARCHAR(100) NOT NULL,
-    new_value VARCHAR(100) NOT NULL,
+    old_value VARCHAR NOT NULL,
+    new_value VARCHAR NOT NULL,
     edit_timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     is_deleted BOOLEAN DEFAULT FALSE,
     
@@ -528,11 +528,11 @@ CREATE TABLE IF NOT EXISTS quiz_app_data_sequrity_data.profiles
 (
     id INT NOT NULL AUTO_INCREMENT,
     user_id INT NOT NULL UNIQUE,
-    login VARCHAR(50) NOT NULL UNIQUE,
+    login VARCHAR NOT NULL UNIQUE,
     salt BINARY(255) NOT NULL,
-    name VARCHAR(100) NULL,
-    email VARCHAR(100) NULL UNIQUE,
-    phone VARCHAR(15) NULL UNIQUE,
+    name VARCHAR NULL,
+    email VARCHAR NULL UNIQUE,
+    phone VARCHAR NULL UNIQUE,
     adding_datetime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     is_deleted BOOLEAN NOT NULL DEFAULT FALSE,
 
