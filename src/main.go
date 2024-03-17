@@ -6,6 +6,7 @@ import (
 
 	jwtware "github.com/gofiber/contrib/jwt"
 	"github.com/gofiber/fiber/v2"
+	"github.com/notAlyosha/quiz-go/api/middlewares/auth"
 	router "github.com/notAlyosha/quiz-go/api/routes"
 )
 
@@ -13,7 +14,15 @@ func main() {
 	//Initialize a new Fiber app
 	app := fiber.New()
 
-	privateKey, _ := rsa.GenerateKey(rand.Reader, 2048)
+	privateKey, err := rsa.GenerateKey(rand.Reader, 2048)
+	if err != nil {
+		panic(err)
+	}
+
+	api := app.Group("/api")
+
+	// unauthentificated route
+	router.SetupAccountRouter(api)
 
 	// JWT Middleware
 	app.Use(jwtware.New(jwtware.Config{
@@ -23,9 +32,9 @@ func main() {
 		},
 	}))
 
-	api := app.Group("/api")
+	app.Use(auth.JwtMiddleware)
 
-	router.SetupAccountRouter(api)
+	// authentification required
 	router.SetupUserRouter(api)
 	router.SetupQuizRouter(api)
 	router.SetupGroupRouter(api)

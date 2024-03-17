@@ -1,4 +1,4 @@
-package types
+package historyType
 
 type History struct {
 	ID           int
