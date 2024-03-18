@@ -15,9 +15,11 @@ func Create(ctx *fiber.Ctx) error {
 	}
 
 	if u.IsDeleted == nil {
+
 		return ctx.JSON("IsDeleted is null")
 	}
 
+	ctx.SendStatus(fiber.StatusAccepted)
 	return ctx.JSON(u)
 }
 
