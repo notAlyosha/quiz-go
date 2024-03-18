@@ -1,6 +1,10 @@
 package accoutHandler
 
-import "github.com/gofiber/fiber/v2"
+import (
+	"github.com/gofiber/fiber/v2"
+	"github.com/golang-jwt/jwt/v5"
+	"github.com/notAlyosha/quiz-go/api/config"
+)
 
 func SignUp(ctx *fiber.Ctx) error {
 	return nil
@@ -11,5 +15,14 @@ func Registration(ctx *fiber.Ctx) error {
 }
 
 func SignIn(ctx *fiber.Ctx) error {
-	return nil
+	// TODO: set claims if user exsists
+	claims := jwt.MapClaims{}
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	signedToken, err := token.SignedString(config.GetConfig().GetPrivateKey())
+	if err != nil {
+		return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"message": "Error signing token"})
+	}
+
+	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{"token": signedToken})
 }
