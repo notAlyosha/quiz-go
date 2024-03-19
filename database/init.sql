@@ -343,7 +343,7 @@ CREATE TABLE IF NOT EXISTS quiz_app_data.sessions
     quiz_id INT NOT NULL,
     status_id INT NOT NULL,
     date_time_start TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    reserv_time INT NOT NULL DEFAULT 0,
+    date_time_end TIMESTAMP NULL,
     is_summary_exam BOOLEAN NOT NULL DEFAULT FALSE,
     is_deleted BOOLEAN NOT NULL DEFAULT FALSE,
 
