@@ -11,3 +11,10 @@ type Quiz struct {
 	MaxAddPoints string
 	IsDeleted    bool
 }
+
+type QuizInput struct {
+	Name         *string
+	Description  *string
+	MaxPoints    *int
+	MaxAddPoints *int
+}

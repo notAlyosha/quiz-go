@@ -9,3 +9,9 @@ type Chat struct {
 	IsGroupChat     bool
 	IsDeleted       bool
 }
+
+type ChatInput struct {
+	Description *string
+	InviteLink  *string `validator:"uri"`
+	ThemeName   *string
+}

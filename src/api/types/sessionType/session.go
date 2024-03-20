@@ -10,3 +10,9 @@ type Session struct {
 	IsReexam      bool
 	IsDeleted     bool
 }
+
+type SessionInput struct {
+	DateTimeStart *time.Time
+	ReserveTime   *int
+	SessionTime   *int
+}

@@ -5,3 +5,7 @@ type Subject struct {
 	Name      string
 	IsDeleted bool
 }
+
+type SubjectInput struct {
+	Name *string `validator:"required"`
+}

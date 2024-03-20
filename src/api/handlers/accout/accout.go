@@ -19,7 +19,7 @@ func SignIn(ctx *fiber.Ctx) error {
 	claims := jwt.MapClaims{}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	signedToken, err := token.SignedString(config.GetConfig().GetPrivateKey())
+	signedToken, err := token.SignedString(config.GetConfig().AccessTokenPrivateKey)
 	if err != nil {
 		return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"message": "Error signing token"})
 	}

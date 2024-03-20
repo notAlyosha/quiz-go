@@ -1,34 +1,59 @@
 package config
 
 import (
-	"crypto/rand"
-	"crypto/rsa"
+	"time"
+
+	"github.com/spf13/viper"
 )
 
-var config *configuration
+type config struct {
+	DBHost         string `mapstructure:"MYSQL_HOST"`
+	DBUserName     string `mapstructure:"MYSQL_USER"`
+	DBUserPassword string `mapstructure:"MYSQL_PASSWORD"`
+	DBName         string `mapstructure:"MYSQL_DB"`
+	DBPort         string `mapstructure:"MYSQL_PORT"`
+	ServerPort     string `mapstructure:"PORT"`
 
-func initConfig() *configuration {
-	key, err := rsa.GenerateKey(rand.Reader, 2048)
+	ClientOrigin string `mapstructure:"CLIENT_ORIGIN"`
+	RedisUri     string `mapstructure:"REDIS_URL"`
+
+	AccessTokenPrivateKey  string        `mapstructure:"ACCESS_TOKEN_PRIVATE_KEY"`
+	AccessTokenPublicKey   string        `mapstructure:"ACCESS_TOKEN_PUBLIC_KEY"`
+	RefreshTokenPrivateKey string        `mapstructure:"REFRESH_TOKEN_PRIVATE_KEY"`
+	RefreshTokenPublicKey  string        `mapstructure:"REFRESH_TOKEN_PUBLIC_KEY"`
+	AccessTokenExpiresIn   time.Duration `mapstructure:"ACCESS_TOKEN_EXPIRED_IN"`
+	RefreshTokenExpiresIn  time.Duration `mapstructure:"REFRESH_TOKEN_EXPIRED_IN"`
+	AccessTokenMaxAge      int           `mapstructure:"ACCESS_TOKEN_MAXAGE"`
+	RefreshTokenMaxAge     int           `mapstructure:"REFRESH_TOKEN_MAXAGE"`
+}
+
+func loadConfig(path string) (Config *config, err error) {
+	viper.AddConfigPath(path)
+	viper.SetConfigType("env")
+	viper.SetConfigName("config")
+
+	viper.AutomaticEnv()
+
+	err = viper.ReadInConfig()
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
-	return &configuration{
-		privateKey: key,
-	}
+
+	var c config
+	err = viper.Unmarshal(&c)
+	return &c, err
 }
 
-func GetConfig() *configuration {
-	if config == nil {
-		config = initConfig()
-		return config
+var Config *config
+
+func GetConfig() config {
+	if Config != nil {
+		Config, err := loadConfig("/")
+		if err != nil {
+			panic(err)
+		}
+		return *Config
 	}
-	return config
-}
 
-type configuration struct {
-	privateKey *rsa.PrivateKey
-}
-
-func (c *configuration) GetPrivateKey() rsa.PrivateKey {
-	return *c.privateKey
+	return *Config
 }

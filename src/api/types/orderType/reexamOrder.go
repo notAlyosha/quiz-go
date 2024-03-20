@@ -10,3 +10,7 @@ type ReexamOrder struct {
 	OrderDatetime time.Time
 	IsDeleted     bool
 }
+
+type ReexamOrderInput struct {
+	OrderDatetime *time.Time
+}

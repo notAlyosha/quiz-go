@@ -7,3 +7,8 @@ type User struct {
 	IsDeleted *bool   `json:"IsDeleted"`
 	LogoURL   *string `json:"LogoURL"`
 }
+
+type UserInput struct {
+	login    *string `validate:"required"`
+	password *string `validate:"required"`
+}

@@ -2,7 +2,7 @@ package userHandler
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"github.com/notAlyosha/quiz-go/api/databasetypes/userType"
+	"github.com/notAlyosha/quiz-go/api/types/userType"
 )
 
 func Create(ctx *fiber.Ctx) error {

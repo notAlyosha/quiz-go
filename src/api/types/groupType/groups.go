@@ -5,3 +5,7 @@ type Group struct {
 	Name      string
 	IsDeleted bool
 }
+
+type GroupInput struct {
+	Name *string
+}
