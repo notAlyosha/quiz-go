@@ -1,0 +1,20 @@
+package entity
+
+import "time"
+
+type Quiz struct {
+	ID           int
+	Name         string
+	Description  *string
+	SummaryTime  time.Time
+	MaxPoints    string
+	MaxAddPoints string
+	IsDeleted    bool
+}
+
+type QuizInput struct {
+	Name         *string
+	Description  *string
+	MaxPoints    *int
+	MaxAddPoints *int
+}
