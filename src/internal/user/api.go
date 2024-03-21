@@ -1,6 +1,10 @@
 package user
 
 import (
+	"strings"
+
+	validation "github.com/go-ozzo/ozzo-validation"
+	"github.com/go-ozzo/ozzo-validation/is"
 	"github.com/gofiber/fiber/v2"
 	entityUser "github.com/notAlyosha/quiz-go/internal/entity/user"
 	uuid "github.com/satori/go.uuid"
@@ -25,8 +29,22 @@ func create(ctx *fiber.Ctx) error {
 	user := ctx.Locals("user").(entityUser.UserResponse)
 
 	var newUser entityUser.UserCreate
-
 	ctx.BodyParser(newUser)
+
+	err := validation.ValidateStruct(&newUser,
+		validation.Field(&newUser.Email, validation.Required, validation.Length(15, 255), is.Email),
+		validation.Field(&newUser.Login, validation.Required, validation.Length(15, 255)),
+		validation.Field(&newUser.LogoURL, validation.Required),
+		validation.Field(&newUser.Name, validation.Required),
+		validation.Field(&newUser.Role, validation.Required),
+	)
+
+	if err != nil {
+		errArray := strings.Split(err.Error(), ";")
+		return ctx.Status(fiber.StatusUnprocessableEntity).JSON(errArray)
+	}
+
+	// todo validate new user
 
 	return createService(ctx, user, newUser)
 }

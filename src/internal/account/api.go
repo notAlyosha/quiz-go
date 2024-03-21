@@ -13,16 +13,12 @@ import (
 func SetupAccountRouter(api fiber.Router) {
 	api.Post("/enter/signIn", signIn)
 	api.Post("/enter/signUp", signUp)
+
 	api.Post("/enter/refresh", refreshAccessToken)
 	api.Post("/enter/logout", logoutUser)
 }
 
 func signUp(ctx *fiber.Ctx) error {
-	var payload *entityUser.SignInInput
-
-	if err := ctx.BodyParser(&payload); err != nil {
-		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "fail", "message": err.Error()})
-	}
 
 	// Todo: implement validation
 

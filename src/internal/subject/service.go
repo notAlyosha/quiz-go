@@ -13,8 +13,8 @@ func createService(ctx *fiber.Ctx, user entityUser.UserResponse, newSubject enti
 	}
 
 	if user.Role == "Teacher" || user.Role == "Admin" {
-		// build group
-		// Todo save new group in database
+		// build subject
+		// Todo save new subject in database
 
 		return ctx.Status(fiber.StatusOK).JSON(fiber.Map{"Message": "Subject has been successfully created"})
 
