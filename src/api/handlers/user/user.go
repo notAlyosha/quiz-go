@@ -2,25 +2,10 @@ package userHandler
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"github.com/notAlyosha/quiz-go/api/types/userType"
 )
 
 func Create(ctx *fiber.Ctx) error {
-	var u *userType.User
-
-	err := ctx.BodyParser(&u)
-
-	if err != nil {
-		return ctx.JSON(err)
-	}
-
-	if u.IsDeleted == nil {
-
-		return ctx.JSON("IsDeleted is null")
-	}
-
-	ctx.SendStatus(fiber.StatusAccepted)
-	return ctx.JSON(u)
+	return nil
 }
 
 func Update(ctx *fiber.Ctx) error {
