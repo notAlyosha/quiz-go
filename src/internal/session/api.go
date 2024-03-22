@@ -1,7 +1,9 @@
 package session
 
 import (
+	entity "github.com/notAlyosha/quiz-go/internal/entity/session"
 	entityUser "github.com/notAlyosha/quiz-go/internal/entity/user"
+	uuid "github.com/satori/go.uuid"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/notAlyosha/quiz-go/pkg/middleware"
@@ -17,31 +19,56 @@ func SetupSessiontRoutes(api fiber.Router) {
 }
 
 func add(ctx *fiber.Ctx) error {
+	subject := &entity.SessionInput{}
+
+	ctx.BodyParser(&subject)
 	user := ctx.Locals("user").(entityUser.UserResponse)
-	return nil
+	return createService(ctx, user, *subject)
 }
 
 func update(ctx *fiber.Ctx) error {
-	//user := ctx.Locals("user").(entityUser.UserResponse)
-	return nil
+	fid := ctx.Params("fid")
+
+	ufid, err := uuid.FromString(fid)
+
+	if err != nil {
+		return ctx.Status(fiber.StatusInternalServerError).JSON("")
+	}
+
+	subject := &entity.SessionInput{}
+
+	ctx.BodyParser(&subject)
+
+	user := ctx.Locals("user").(entityUser.UserResponse)
+	return updateService(ctx, user, *subject, ufid)
 }
 
 func getAll(ctx *fiber.Ctx) error {
-	//user := ctx.Locals("user").(entityUser.UserResponse)
-	return nil
+	fid := ctx.Params("fid")
+	user := ctx.Locals("user").(entityUser.UserResponse)
+	return getAllService(ctx, user, fid)
 }
 
 func getByID(ctx *fiber.Ctx) error {
-	//user := ctx.Locals("user").(entityUser.UserResponse)
-	return nil
+	fid := ctx.Params("fid")
+	user := ctx.Locals("user").(entityUser.UserResponse)
+	return getByIdService(ctx, user, fid)
 }
 
 func getByUserID(ctx *fiber.Ctx) error {
-	//user := ctx.Locals("user").(entityUser.UserResponse)
-	return nil
+	fid := ctx.Params("fid")
+
+	user := ctx.Locals("user").(entityUser.UserResponse)
+	return getByUserIDService(ctx, user, fid)
 }
 
 func getByGroupID(ctx *fiber.Ctx) error {
-	//user := ctx.Locals("user").(entityUser.UserResponse)
-	return nil
+	fid := ctx.Params("fid")
+	user := ctx.Locals("user").(entityUser.UserResponse)
+	return getByGroupIDService(ctx, user, fid)
+}
+
+func getCurrentByJWT(ctx *fiber.Ctx) error {
+	user := ctx.Locals("user").(entityUser.UserResponse)
+	return getCurrentByJWTService(ctx, user)
 }

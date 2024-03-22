@@ -7,7 +7,6 @@ import (
 	"github.com/notAlyosha/quiz-go/internal/config"
 	entityUser "github.com/notAlyosha/quiz-go/internal/entity/user"
 	"github.com/notAlyosha/quiz-go/pkg/utils"
-	"golang.org/x/crypto/bcrypt"
 )
 
 func SetupAccountRouter(api fiber.Router) {
@@ -44,19 +43,19 @@ func signIn(ctx *fiber.Ctx) error {
 	var user entityUser.User
 
 	// Todo check password
-	err := bcrypt.CompareHashAndPassword([]byte(user.Salt), []byte(payload.Password))
-	if err != nil {
-		return ctx.Status(fiber.StatusBadGateway).JSON(fiber.Map{"status": "fail", "message": "Password is not valid"})
-	}
+	// err := bcrypt.CompareHashAndPassword([]byte(user.Salt), []byte(payload.Password))
+	// if err != nil {
+	// 	return ctx.Status(fiber.StatusBadGateway).JSON(fiber.Map{"status": "fail", "message": "Password is not valid"})
+	// }
 
 	config := config.LoadConfig()
 
-	accessTokenDetails, err := utils.CreateToken(user.FrontID.String(), config.AccessTokenExpiresIn, config.AccessTokenPrivateKey)
+	accessTokenDetails, err := utils.CreateToken(user.FrontID, config.AccessTokenExpiresIn, config.AccessTokenPrivateKey)
 	if err != nil {
 		return ctx.Status(fiber.StatusUnprocessableEntity).JSON(fiber.Map{"status": "fail", "message": err.Error()})
 	}
 
-	refreshTokenDetails, err := utils.CreateToken(user.FrontID.String(), config.RefreshTokenExpiresIn, config.RefreshTokenPrivateKey)
+	refreshTokenDetails, err := utils.CreateToken(user.FrontID, config.RefreshTokenExpiresIn, config.RefreshTokenPrivateKey)
 	if err != nil {
 		return ctx.Status(fiber.StatusUnprocessableEntity).JSON(fiber.Map{"status": "fail", "message": err.Error()})
 	}
@@ -113,7 +112,7 @@ func refreshAccessToken(ctx *fiber.Ctx) error {
 	var user entityUser.User
 	// find user in database using token claims and paste a record into structure above
 
-	accessTokenDetails, err := utils.CreateToken(user.FrontID.String(), config.AccessTokenExpiresIn, config.AccessTokenPrivateKey)
+	accessTokenDetails, err := utils.CreateToken(user.FrontID, config.AccessTokenExpiresIn, config.AccessTokenPrivateKey)
 	if err != nil {
 		return ctx.Status(fiber.StatusUnprocessableEntity).JSON(fiber.Map{"status": "fail", "message": err.Error()})
 	}

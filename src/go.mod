@@ -9,11 +9,14 @@ require (
 )
 
 require (
+	filippo.io/edwards25519 v1.1.0 // indirect
 	github.com/asaskevich/govalidator v0.0.0-20230301143203-a9d515a09cc2 // indirect
 	github.com/fsnotify/fsnotify v1.7.0 // indirect
 	github.com/go-ozzo/ozzo-validation v3.6.0+incompatible // indirect
+	github.com/go-sql-driver/mysql v1.8.0 // indirect
 	github.com/google/uuid v1.5.0 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
+	github.com/joho/godotenv v1.5.1 // indirect
 	github.com/magiconair/properties v1.8.7 // indirect
 	github.com/mattn/go-runewidth v0.0.15 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect

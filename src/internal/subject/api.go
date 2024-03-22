@@ -44,9 +44,8 @@ func update(ctx *fiber.Ctx) error {
 }
 
 func getAll(ctx *fiber.Ctx) error {
-	fid := ctx.Params("fid")
 	user := ctx.Locals("user").(entityUser.UserResponse)
-	return getAllService(ctx, user, fid)
+	return getAllService(ctx, user)
 }
 
 func getByID(ctx *fiber.Ctx) error {
@@ -56,11 +55,13 @@ func getByID(ctx *fiber.Ctx) error {
 }
 
 func getByUserID(ctx *fiber.Ctx) error {
-	//user := ctx.Locals("user").(entityUser.UserResponse)
-	return nil
+	fid := ctx.Params("fid")
+	user := ctx.Locals("user").(entityUser.UserResponse)
+	return getByUserIDService(ctx, user, fid)
 }
 
 func getByGroupID(ctx *fiber.Ctx) error {
-	//user := ctx.Locals("user").(entityUser.UserResponse)
-	return nil
+	fid := ctx.Params("fid")
+	user := ctx.Locals("user").(entityUser.UserResponse)
+	return geyByGroupIDService(ctx, user, fid)
 }

@@ -1,23 +1,18 @@
 package entity
 
 import (
-	"time"
+	"database/sql"
 
 	uuid "github.com/satori/go.uuid"
 )
 
 // represents record in database
 type User struct {
-	ID              *int       `json:"ID"`
-	FrontID         *uuid.UUID `json:"front_id"`
-	Role            *string    `json:"Role"`
-	Salt            string
-	Login           string
-	Email           string
-	Name            string
-	LogoURL         *string `json:"LogoURL"`
-	AddingTimestamp time.Time
-	IsDeleted       bool `json:"IsDeleted"`
+	ID        int            `json:"ID"`
+	FrontID   string         `json:"front_id"`
+	Role      string         `json:"role"`
+	LogoURL   sql.NullString `json:"LogoURL"`
+	IsDeleted bool           `json:"IsDeleted"`
 }
 
 // struct for authentification

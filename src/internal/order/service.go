@@ -1,7 +1,6 @@
-package user
+package order
 
 import (
-	validation "github.com/go-ozzo/ozzo-validation"
 	"github.com/gofiber/fiber/v2"
 	entityUser "github.com/notAlyosha/quiz-go/internal/entity/user"
 	uuid "github.com/satori/go.uuid"
@@ -17,27 +16,13 @@ func createService(ctx *fiber.Ctx, user entityUser.UserResponse, newUser entityU
 			return ctx.Status(fiber.StatusForbidden).JSON(fiber.Map{"Error": "Teacher cannot create admin or teacher"})
 		}
 
-		// createUser := convertFromUC2U(newUser)
-
-		// q := db.NewQuery("").
-		// q.Bind(dbx.Params{"id": 100})
-		// err := q.One(&user)
-
-		validation.ValidateStruct(&newUser,
-			validation.Field(&newUser.Name, validation.Required, validation.Length(10, 255)),
-			validation.Field(&newUser.Name, validation.Required, validation.Length(10, 255)),
-			validation.Field(&newUser.Name, validation.Required, validation.Length(10, 255)),
-			validation.Field(&newUser.Name, validation.Required, validation.Length(10, 255)),
-			validation.Field(&newUser.Name, validation.Required, validation.Length(10, 255)),
-		)
+		// Todo save new user in database:=
 
 		return ctx.Status(fiber.StatusOK).JSON(fiber.Map{"Message": "User has been successfully created"})
 
 	}
 
 	if user.Role == "Admin" {
-		//createUser := convertFromUC2U(newUser)
-
 		// Todo save new user in database
 
 		return ctx.Status(fiber.StatusOK).JSON(fiber.Map{"Message": "User has been successfully created"})
@@ -54,8 +39,6 @@ func updateService(ctx *fiber.Ctx, user entityUser.UserResponse, newUser entityU
 			return ctx.Status(fiber.StatusForbidden).JSON(fiber.Map{"Error": "Student cannot change role"})
 		}
 
-		//createUser := convertFromUC2U(newUser)
-
 		// Todo update user in db
 
 		return ctx.Status(fiber.StatusOK).JSON(fiber.Map{"Message": "User has been successfully updated"})
@@ -67,8 +50,6 @@ func updateService(ctx *fiber.Ctx, user entityUser.UserResponse, newUser entityU
 			return ctx.Status(fiber.StatusForbidden).JSON(fiber.Map{"Error": "Teacher cannot change role"})
 		}
 
-		//createUser := convertFromUC2U(newUser)
-
 		// Todo update user in db
 
 		return ctx.Status(fiber.StatusOK).JSON(fiber.Map{"Message": "User has been successfully updated"})
@@ -76,8 +57,6 @@ func updateService(ctx *fiber.Ctx, user entityUser.UserResponse, newUser entityU
 	}
 
 	if user.Role == "Admin" {
-		//	createUser := convertFromUC2U(newUser)
-
 		// Todo update user in db
 
 		return ctx.Status(fiber.StatusOK).JSON(fiber.Map{"Message": "User has been successfully updated"})
@@ -112,66 +91,4 @@ func deleteService(ctx *fiber.Ctx, user entityUser.UserResponse, fid uuid.UUID) 
 
 	return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"Error": "Invalid role"})
 
-}
-
-func getByIdService(ctx *fiber.Ctx, fid uuid.UUID) error {
-	var foundUser *entityUser.User
-	// todo set record data to user structure
-
-	if foundUser == nil {
-		return ctx.Status(fiber.StatusNotFound).JSON(fiber.Map{"Error": "Provided id is not exsist"})
-	}
-
-	clientUser := convertFromU2UC(*foundUser)
-
-	return ctx.Status(fiber.StatusFound).JSON(clientUser)
-
-}
-
-func getGroupByIdService(ctx *fiber.Ctx, user entityUser.UserResponse, fid uuid.UUID) error {
-	// variable that stores users in group with fid
-	// todo get data from db
-	var users []entityUser.User
-
-	if user.Role == "Student" || user.Role == "Teacher" {
-		// todo check that user has access to group with given fid
-
-		// todo get data from db
-
-		return ctx.Status(fiber.StatusFound).JSON(users)
-
-	}
-
-	if user.Role == "Admin" {
-		// todo get data from db
-
-		return ctx.Status(fiber.StatusFound).JSON(users)
-	}
-
-	return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"Error": "Invalid role"})
-
-}
-
-func convertFromUC2U(newUser entityUser.UserCreate) entityUser.User {
-	user := &entityUser.User{}
-
-	// user.Name = newUser.Name
-	// user.Login = newUser.Login
-	// user.Role = newUser.Role
-	// user.Email = newUser.Email
-	//user.LogoURL = newUser.LogoURL
-
-	return *user
-}
-
-func convertFromU2UC(user entityUser.User) entityUser.UserCreate {
-	userCreate := &entityUser.UserCreate{}
-
-	// userCreate.Email = user.Email
-	// userCreate.Login = user.Login
-	// //userCreate.LogoURL = &user.LogoURL
-	// userCreate.Name = user.Name
-	// userCreate.Role = user.Role
-
-	return *userCreate
 }

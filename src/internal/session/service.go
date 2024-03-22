@@ -1,13 +1,13 @@
-package subject
+package session
 
 import (
 	"github.com/gofiber/fiber/v2"
-	entity "github.com/notAlyosha/quiz-go/internal/entity/subject"
+	entity "github.com/notAlyosha/quiz-go/internal/entity/session"
 	entityUser "github.com/notAlyosha/quiz-go/internal/entity/user"
 	uuid "github.com/satori/go.uuid"
 )
 
-func createService(ctx *fiber.Ctx, user entityUser.UserResponse, newSubject entity.SubjectInput) error {
+func createService(ctx *fiber.Ctx, user entityUser.UserResponse, newSubject entity.SessionInput) error {
 	if user.Role == "Student" {
 		return ctx.Status(fiber.StatusForbidden).JSON(fiber.Map{"Error": "Student cannot create subject"})
 	}
@@ -24,7 +24,7 @@ func createService(ctx *fiber.Ctx, user entityUser.UserResponse, newSubject enti
 
 }
 
-func updateService(ctx *fiber.Ctx, user entityUser.UserResponse, newSubject entity.SubjectInput, subjectFid uuid.UUID) error {
+func updateService(ctx *fiber.Ctx, user entityUser.UserResponse, newSubject entity.SessionInput, subjectFid uuid.UUID) error {
 	if user.Role == "Student" {
 		return ctx.Status(fiber.StatusForbidden).JSON(fiber.Map{"Error": "Student cannot change subject"})
 	}
@@ -45,28 +45,8 @@ func updateService(ctx *fiber.Ctx, user entityUser.UserResponse, newSubject enti
 
 }
 
-func deleteService(ctx *fiber.Ctx, user entityUser.UserResponse, fid uuid.UUID) error {
-	if user.Role == "Student" || user.Role == "Teacher" {
-		return ctx.Status(fiber.StatusForbidden).JSON(fiber.Map{"Error": "You cannot delete this subject"})
-
-	}
-
-	if user.Role == "Admin" {
-
-		// todo Get subject record from database and set data in subject
-		var subject entity.Subject
-
-		subject.IsDeleted = true
-		return ctx.Status(fiber.StatusOK).JSON(fiber.Map{"Message": "Subject has been successfully deleted"})
-
-	}
-
-	return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"Error": "Invalid role"})
-
-}
-
-func getAllService(ctx *fiber.Ctx, user entityUser.UserResponse) error {
-	var foundSubjects *[]entity.Subject
+func getAllService(ctx *fiber.Ctx, user entityUser.UserResponse, fid string) error {
+	var foundSubjects *[]entity.Session
 
 	if user.Role == "Student" || user.Role == "Teacher" {
 		// todo check that user has access to subject with given fid
@@ -92,7 +72,7 @@ func getAllService(ctx *fiber.Ctx, user entityUser.UserResponse) error {
 func getByIdService(ctx *fiber.Ctx, user entityUser.UserResponse, fid string) error {
 	// variable that stores users in subject with fid
 	// todo get data from db
-	var subject entity.Subject
+	var subject entity.Session
 
 	if user.Role == "Student" || user.Role == "Teacher" {
 		// todo check that user has access to subject with given fid
@@ -116,6 +96,10 @@ func getByUserIDService(ctx *fiber.Ctx, user entityUser.UserResponse, fid string
 	return nil
 }
 
-func geyByGroupIDService(ctx *fiber.Ctx, user entityUser.UserResponse, fid string) error {
+func getByGroupIDService(ctx *fiber.Ctx, user entityUser.UserResponse, fid string) error {
+	return nil
+}
+
+func getCurrentByJWTService(ctx *fiber.Ctx, user entityUser.UserResponse) error {
 	return nil
 }

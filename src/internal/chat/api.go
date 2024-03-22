@@ -2,7 +2,6 @@ package chat
 
 import (
 	"github.com/gofiber/fiber/v2"
-	entityUser "github.com/notAlyosha/quiz-go/internal/entity/user"
 
 	"github.com/notAlyosha/quiz-go/pkg/middleware"
 )
@@ -18,7 +17,7 @@ func SetupChatRouter(api fiber.Router) {
 }
 
 func create(ctx *fiber.Ctx) error {
-	user := ctx.Locals("user").(entityUser.UserResponse)
+	//user := ctx.Locals("user").(entityUser.UserResponse)
 
 	return nil
 }

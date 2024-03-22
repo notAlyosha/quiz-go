@@ -2,8 +2,6 @@ package quiz
 
 import (
 	"github.com/gofiber/fiber/v2"
-	entityUser "github.com/notAlyosha/quiz-go/internal/entity/user"
-
 	"github.com/notAlyosha/quiz-go/pkg/middleware"
 )
 
@@ -19,7 +17,7 @@ func SetupQuizRouter(api fiber.Router) {
 }
 
 func create(ctx *fiber.Ctx) error {
-	user := ctx.Locals("user").(entityUser.UserResponse)
+	//user := ctx.Locals("user").(entityUser.UserResponse)
 	return ctx.SendString("It works! Yay")
 }
 
