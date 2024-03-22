@@ -2,6 +2,7 @@ package entity
 
 import uuid "github.com/satori/go.uuid"
 
+// represents record in database
 type Group struct {
 	ID        int
 	FrontID   uuid.UUID

@@ -1,11 +1,15 @@
 package entity
 
-import "time"
+import (
+	"database/sql"
+	"time"
+)
 
+// represents record in database
 type Quiz struct {
 	ID           int
 	Name         string
-	Description  *string
+	Description  sql.NullString
 	SummaryTime  time.Time
 	MaxPoints    string
 	MaxAddPoints string

@@ -1,13 +1,21 @@
 package entity
 
-import "time"
+import (
+	"database/sql"
+	"time"
+)
 
+// represents record in database
 type Session struct {
 	ID            int
-	DateTimeStart time.Time
+	FrontID       int
+	TeacherID     int
+	QuizID        int
+	StatusID      int
 	ReserveTime   int
-	SessionTime   int
-	IsReexam      bool
+	DateTimeStart time.Time
+	DateTimeEnd   sql.NullTime
+	IsSummaryExam bool
 	IsDeleted     bool
 }
 

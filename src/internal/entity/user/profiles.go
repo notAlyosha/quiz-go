@@ -1,6 +1,9 @@
 package entity
 
-import "time"
+import (
+	"database/sql"
+	"time"
+)
 
 type Profile struct {
 	Id             int
@@ -8,7 +11,7 @@ type Profile struct {
 	Login          string
 	Salt           string
 	AddingDatetime time.Time
-	Name           string
+	Name           sql.NullString
 	Email          string
 	Phone          string
 	IsDeleted      bool
