@@ -15,7 +15,6 @@ func SetupOrderRoutes(api fiber.Router) {
 }
 
 func create(ctx *fiber.Ctx) error {
-	//user := ctx.Locals("user").(entityUser.UserResponse)
 	return nil
 }
 

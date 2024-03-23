@@ -1,6 +1,10 @@
 package entity
 
-import uuid "github.com/satori/go.uuid"
+import (
+	validation "github.com/go-ozzo/ozzo-validation"
+	"github.com/go-ozzo/ozzo-validation/is"
+	uuid "github.com/satori/go.uuid"
+)
 
 // represents record in database
 type Group struct {
@@ -12,5 +16,12 @@ type Group struct {
 
 type GroupInput struct {
 	FrontID uuid.UUID
-	Name    *string
+	Name    string
+}
+
+func (g *GroupInput) Check() error {
+	return validation.ValidateStruct(g,
+		validation.Field(g.FrontID, validation.Required, is.UUID),
+		validation.Field(g.Name, validation.Length(5, 30)),
+	)
 }

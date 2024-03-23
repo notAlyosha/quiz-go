@@ -29,7 +29,7 @@ func main() {
 
 	db := dbcontext.GetDB()
 
-	q := db.NewQuery("SELECT * FROM users LIMIT 10")
+	q := db.NewQuery("SELECT * FROM users")
 
 	var users *entityUser.User
 
@@ -37,8 +37,6 @@ func main() {
 	if err != nil {
 		fmt.Println(err)
 	}
-
-	fmt.Println(users)
 
 	// create fiber app
 	app := fiber.New()
@@ -56,5 +54,4 @@ func main() {
 	// listen and serve
 	app.Listen(":" + config.ServerPort)
 
-	fmt.Println("Something to be..")
 }

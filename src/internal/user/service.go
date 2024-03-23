@@ -1,9 +1,9 @@
 package user
 
 import (
-	validation "github.com/go-ozzo/ozzo-validation"
 	"github.com/gofiber/fiber/v2"
 	entityUser "github.com/notAlyosha/quiz-go/internal/entity/user"
+	"github.com/notAlyosha/quiz-go/pkg/middleware"
 	uuid "github.com/satori/go.uuid"
 )
 
@@ -17,49 +17,91 @@ func createService(ctx *fiber.Ctx, user entityUser.UserResponse, newUser entityU
 			return ctx.Status(fiber.StatusForbidden).JSON(fiber.Map{"Error": "Teacher cannot create admin or teacher"})
 		}
 
-		// createUser := convertFromUC2U(newUser)
+		count, err := countProfileInDB(newUser)
+		if err != nil {
+			return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"Error": "Unhandled server error"})
+		}
 
-		// q := db.NewQuery("").
-		// q.Bind(dbx.Params{"id": 100})
-		// err := q.One(&user)
+		if count != 0 {
+			return ctx.Status(fiber.StatusForbidden).JSON(fiber.Map{"Error": "User already exists"})
+		}
 
-		validation.ValidateStruct(&newUser,
-			validation.Field(&newUser.Name, validation.Required, validation.Length(10, 255)),
-			validation.Field(&newUser.Name, validation.Required, validation.Length(10, 255)),
-			validation.Field(&newUser.Name, validation.Required, validation.Length(10, 255)),
-			validation.Field(&newUser.Name, validation.Required, validation.Length(10, 255)),
-			validation.Field(&newUser.Name, validation.Required, validation.Length(10, 255)),
-		)
+		salt, err := middleware.GenerateRandomSalt(255)
+		if err != nil {
+			return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"Error": "Unhandled server error"})
+		}
+
+		newUser.Password = middleware.HashPassword(newUser.Password, salt)
+		FID := uuid.NewV4().String()
+
+		// TODO TEST BYTE[255] => STRING CONVERTION IN MySQL DBMS
+		if createUserInStorage(FID, string(salt), newUser) != nil {
+			return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"Error": "Unhandled server error"})
+		}
 
 		return ctx.Status(fiber.StatusOK).JSON(fiber.Map{"Message": "User has been successfully created"})
-
 	}
 
 	if user.Role == "Admin" {
-		//createUser := convertFromUC2U(newUser)
 
-		// Todo save new user in database
-
-		return ctx.Status(fiber.StatusOK).JSON(fiber.Map{"Message": "User has been successfully created"})
-
-	}
-
-	return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"Error": "Invalid role"})
-
-}
-
-func updateService(ctx *fiber.Ctx, user entityUser.UserResponse, newUser entityUser.UserCreate) error {
-	if user.Role == "Student" {
-		if newUser.Role != "Student" {
-			return ctx.Status(fiber.StatusForbidden).JSON(fiber.Map{"Error": "Student cannot change role"})
+		count, err := countProfileInDB(newUser)
+		if err != nil {
+			return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"Error": "Unhandled server error"})
 		}
 
-		//createUser := convertFromUC2U(newUser)
+		if count != 0 {
+			return ctx.Status(fiber.StatusForbidden).JSON(fiber.Map{"Error": "User already exists"})
+		}
 
-		// Todo update user in db
+		salt, err := middleware.GenerateRandomSalt(255)
+		if err != nil {
+			return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"Error": "Unhandled server error"})
+		}
+
+		newUser.Password = middleware.HashPassword(newUser.Password, salt)
+		FID := uuid.NewV4().String()
+		// TODO TEST BYTE[255] => STRING CONVERTION IN MySQL DBMS
+		if createUserInStorage(FID, string(salt), newUser) != nil {
+			return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"Error": "Unhandled server error"})
+		}
+
+		return ctx.Status(fiber.StatusOK).JSON(fiber.Map{"Message": "User has been successfully created"})
+	}
+	return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"Error": "Invalid role"})
+}
+
+func updateService(ctx *fiber.Ctx, user entityUser.UserResponse, newUser entityUser.UserCreate, updated_user_FID string) error {
+	if user.Role == "Student" {
+		if newUser.Role != "Student" {
+			return ctx.Status(fiber.StatusForbidden).JSON(fiber.Map{"Error": "Student cannot change self role"})
+		}
+
+		count, err := countProfileInDB(newUser)
+		if err != nil {
+			return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"Error": "Unhandled server error"})
+		}
+
+		if count != 0 {
+			return ctx.Status(fiber.StatusForbidden).JSON(fiber.Map{"Error": "User already exists"})
+		}
+
+		if isUserInDB(updated_user_FID) != nil {
+			return ctx.Status(fiber.StatusForbidden).JSON(fiber.Map{"Error": "User not found"})
+		}
+
+		salt, err := getSaltUser(updated_user_FID)
+
+		if err != nil {
+			return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"Error": "Unhandled server error"})
+		}
+
+		newUser.Password = middleware.HashPassword(newUser.Password, []byte(salt))
+
+		if updateUserInStorage(updated_user_FID, newUser) != nil {
+			return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"Error": "Unhandled server error"})
+		}
 
 		return ctx.Status(fiber.StatusOK).JSON(fiber.Map{"Message": "User has been successfully updated"})
-
 	}
 
 	if user.Role == "Teacher" {
@@ -67,18 +109,60 @@ func updateService(ctx *fiber.Ctx, user entityUser.UserResponse, newUser entityU
 			return ctx.Status(fiber.StatusForbidden).JSON(fiber.Map{"Error": "Teacher cannot change role"})
 		}
 
-		//createUser := convertFromUC2U(newUser)
+		count, err := countProfileInDB(newUser)
+		if err != nil {
+			return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"Error": "Unhandled server error"})
+		}
 
-		// Todo update user in db
+		if count != 0 {
+			return ctx.Status(fiber.StatusForbidden).JSON(fiber.Map{"Error": "Phone or Email or login already exists"})
+		}
+
+		if isUserInDB(updated_user_FID) != nil {
+			return ctx.Status(fiber.StatusForbidden).JSON(fiber.Map{"Error": "User not found"})
+		}
+
+		salt, err := getSaltUser(updated_user_FID)
+
+		if err != nil {
+			return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"Error": "Unhandled server error"})
+		}
+
+		newUser.Password = middleware.HashPassword(newUser.Password, []byte(salt))
+
+		if updateUserInStorage(updated_user_FID, newUser) != nil {
+			return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"Error": "Unhandled server error"})
+		}
 
 		return ctx.Status(fiber.StatusOK).JSON(fiber.Map{"Message": "User has been successfully updated"})
 
 	}
 
 	if user.Role == "Admin" {
-		//	createUser := convertFromUC2U(newUser)
+		count, err := countProfileInDB(newUser)
+		if err != nil {
+			return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"Error": "Unhandled server error"})
+		}
 
-		// Todo update user in db
+		if count != 0 {
+			return ctx.Status(fiber.StatusForbidden).JSON(fiber.Map{"Error": "Phone or Email or login already exists"})
+		}
+
+		if isUserInDB(updated_user_FID) != nil {
+			return ctx.Status(fiber.StatusForbidden).JSON(fiber.Map{"Error": "User not found"})
+		}
+
+		salt, err := getSaltUser(updated_user_FID)
+
+		if err != nil {
+			return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"Error": "Unhandled server error"})
+		}
+
+		newUser.Password = middleware.HashPassword(newUser.Password, []byte(salt))
+
+		if updateUserInStorage(updated_user_FID, newUser) != nil {
+			return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"Error": "Unhandled server error"})
+		}
 
 		return ctx.Status(fiber.StatusOK).JSON(fiber.Map{"Message": "User has been successfully updated"})
 	}
@@ -87,45 +171,50 @@ func updateService(ctx *fiber.Ctx, user entityUser.UserResponse, newUser entityU
 
 }
 
-func deleteService(ctx *fiber.Ctx, user entityUser.UserResponse, fid uuid.UUID) error {
+func deleteService(ctx *fiber.Ctx, user entityUser.UserResponse, deleted_user_fid uuid.UUID) error {
 	if user.Role == "Student" || user.Role == "Teacher" {
-		if user.FrontID != fid {
+		if user.FrontID != deleted_user_fid {
 			return ctx.Status(fiber.StatusForbidden).JSON(fiber.Map{"Error": "Your id and provided id is not the same"})
 		}
 
-		// todo Get user record from database and set data in user
-		//var user entityUser.User
+		if isUserInDB(deleted_user_fid.String()) == nil {
+			err := deleteUserFromStorage(deleted_user_fid.String())
+			if err != nil {
+				return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"Error": "Unhandled server error"})
+			}
+		}
 
-		//user.IsDeleted = true
 		return ctx.Status(fiber.StatusOK).JSON(fiber.Map{"Message": "User has been successfully deleted"})
 	}
 
 	if user.Role == "Admin" {
 
-		// todo Get user record from database and set data in user
-		//var user entityUser.User
+		if isUserInDB(deleted_user_fid.String()) == nil {
+			err := deleteUserFromStorage(deleted_user_fid.String())
+			if err != nil {
+				return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"Error": "Unhandled server error"})
+			}
+		}
 
-		//user.IsDeleted = true
 		return ctx.Status(fiber.StatusOK).JSON(fiber.Map{"Message": "User has been successfully deleted"})
-
 	}
 
 	return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"Error": "Invalid role"})
-
 }
 
 func getByIdService(ctx *fiber.Ctx, fid uuid.UUID) error {
-	var foundUser *entityUser.User
-	// todo set record data to user structure
+	foundUser, err := userByIdFromStorage(fid)
 
-	if foundUser == nil {
+	if err == nil {
 		return ctx.Status(fiber.StatusNotFound).JSON(fiber.Map{"Error": "Provided id is not exsist"})
 	}
 
-	clientUser := convertFromU2UC(*foundUser)
+	clientUser := entityUser.UserResponse{}
+
+	clientUser.FrontID = uuid.FromStringOrNil(foundUser.FrontID)
+	clientUser.Role = foundUser.Role
 
 	return ctx.Status(fiber.StatusFound).JSON(clientUser)
-
 }
 
 func getGroupByIdService(ctx *fiber.Ctx, user entityUser.UserResponse, fid uuid.UUID) error {
@@ -151,27 +240,6 @@ func getGroupByIdService(ctx *fiber.Ctx, user entityUser.UserResponse, fid uuid.
 	return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"Error": "Invalid role"})
 
 }
-
-func convertFromUC2U(newUser entityUser.UserCreate) entityUser.User {
-	user := &entityUser.User{}
-
-	// user.Name = newUser.Name
-	// user.Login = newUser.Login
-	// user.Role = newUser.Role
-	// user.Email = newUser.Email
-	//user.LogoURL = newUser.LogoURL
-
-	return *user
-}
-
-func convertFromU2UC(user entityUser.User) entityUser.UserCreate {
-	userCreate := &entityUser.UserCreate{}
-
-	// userCreate.Email = user.Email
-	// userCreate.Login = user.Login
-	// //userCreate.LogoURL = &user.LogoURL
-	// userCreate.Name = user.Name
-	// userCreate.Role = user.Role
-
-	return *userCreate
+func getByRoleIdService() error {
+	return nil
 }

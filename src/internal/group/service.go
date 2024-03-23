@@ -33,12 +33,14 @@ func updateService(ctx *fiber.Ctx, user entityUser.UserResponse, newGroup entity
 	if user.Role == "Teacher" {
 		// todo check that teacher has access to it's group
 		// todo change group in db
+
 		return ctx.Status(fiber.StatusOK).JSON(fiber.Map{"Message": "Group has been successfully updated"})
 
 	}
 
 	if user.Role == "Admin" {
 		// Todo update group in db
+
 		return ctx.Status(fiber.StatusOK).JSON(fiber.Map{"Message": "Group has been successfully updated"})
 	}
 
@@ -54,7 +56,7 @@ func deleteService(ctx *fiber.Ctx, user entityUser.UserResponse, fid uuid.UUID) 
 
 	if user.Role == "Admin" {
 
-		// todo Get group record from database and set data in group
+		// todo delete group record from database and set data in group
 		var group entity.Group
 
 		group.IsDeleted = true

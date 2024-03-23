@@ -12,10 +12,13 @@ import (
 func SetupSessiontRoutes(api fiber.Router) {
 	api.Post("/subject/add", middleware.DeserializeUser, add)
 	api.Patch("/subject/update", middleware.DeserializeUser, update)
+
 	api.Get("/subject", middleware.DeserializeUser, getAll)
 	api.Get("/subject/:fid", middleware.DeserializeUser, getByID)
 	api.Get("/subject/user/:fid", middleware.DeserializeUser, getByUserID)
 	api.Get("/subject/group/:fid", middleware.DeserializeUser, getByGroupID)
+	api.Get("/subject/:fid/question", middleware.DeserializeUser, getCurrentByJWT)
+
 }
 
 func add(ctx *fiber.Ctx) error {

@@ -12,6 +12,7 @@ import (
 func SetupSubjectRoute(api fiber.Router) {
 	api.Post("/subject/add", middleware.DeserializeUser, add)
 	api.Patch("/subject/update/:fid", middleware.DeserializeUser, update)
+	api.Patch("/subject/delete/:fid", middleware.DeserializeUser, delete)
 	api.Get("/subject/", middleware.DeserializeUser, getAll)
 	api.Get("/subject/:fid", middleware.DeserializeUser, getByID)
 	api.Get("/subject/user/:fid", middleware.DeserializeUser, getByUserID)
@@ -41,6 +42,12 @@ func update(ctx *fiber.Ctx) error {
 
 	user := ctx.Locals("user").(entityUser.UserResponse)
 	return updateService(ctx, user, *subject, ufid)
+}
+
+func delete(ctx *fiber.Ctx) error {
+	fid := uuid.FromStringOrNil(ctx.Params("fid"))
+	user := ctx.Locals("user").(entityUser.UserResponse)
+	return deleteService(ctx, user, fid)
 }
 
 func getAll(ctx *fiber.Ctx) error {

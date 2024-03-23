@@ -3,8 +3,6 @@ package user
 import (
 	"strings"
 
-	validation "github.com/go-ozzo/ozzo-validation"
-	"github.com/go-ozzo/ozzo-validation/is"
 	"github.com/gofiber/fiber/v2"
 	entityUser "github.com/notAlyosha/quiz-go/internal/entity/user"
 	uuid "github.com/satori/go.uuid"
@@ -17,10 +15,11 @@ func SetupUserRouter(api fiber.Router) {
 	api.Patch("/user/update/:fid", middleware.DeserializeUser, update)
 	api.Delete("/user/delete/:fid", middleware.DeserializeUser, delete)
 
+	api.Get("/user", middleware.DeserializeUser, geyByAuthData)
 	api.Get("/user", middleware.DeserializeUser, getAll)
 	api.Get("/user/:fid", middleware.DeserializeUser, getById)
-	api.Get("/user/group/:fid", middleware.DeserializeUser, getGroupById)
-	api.Get("/user/role/:fid", middleware.DeserializeUser, getByRoleId)
+	api.Get("/user/:fid/groups", middleware.DeserializeUser, getGroupById)
+	api.Get("/user/:fid/role", middleware.DeserializeUser, getByRoleId)
 
 }
 
@@ -31,13 +30,7 @@ func create(ctx *fiber.Ctx) error {
 	var newUser entityUser.UserCreate
 	ctx.BodyParser(newUser)
 
-	err := validation.ValidateStruct(&newUser,
-		validation.Field(&newUser.Email, validation.Required, validation.Length(15, 255), is.Email),
-		validation.Field(&newUser.Login, validation.Required, validation.Length(15, 255)),
-		validation.Field(&newUser.LogoURL, validation.Required),
-		validation.Field(&newUser.Name, validation.Required),
-		validation.Field(&newUser.Role, validation.Required),
-	)
+	err := newUser.Check()
 
 	if err != nil {
 		errArray := strings.Split(err.Error(), ";")
@@ -50,13 +43,15 @@ func create(ctx *fiber.Ctx) error {
 }
 
 func update(ctx *fiber.Ctx) error {
+	fid := ctx.Params("fid")
+
 	user := ctx.Locals("user").(entityUser.UserResponse)
 
 	var newUser entityUser.UserCreate
 
 	ctx.BodyParser(newUser)
 
-	return updateService(ctx, user, newUser)
+	return updateService(ctx, user, newUser, fid)
 
 }
 
@@ -72,6 +67,10 @@ func delete(ctx *fiber.Ctx) error {
 
 	return deleteService(ctx, user, ufid)
 
+}
+
+func geyByAuthData(ctx *fiber.Ctx) error {
+	return nil
 }
 
 func getAll(ctx *fiber.Ctx) error {
@@ -109,6 +108,6 @@ func getGroupById(ctx *fiber.Ctx) error {
 }
 
 func getByRoleId(ctx *fiber.Ctx) error {
-	return nil
+	return getByRoleIdService()
 
 }

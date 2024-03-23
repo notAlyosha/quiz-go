@@ -92,3 +92,15 @@ func deleteService(ctx *fiber.Ctx, user entityUser.UserResponse, fid uuid.UUID) 
 	return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"Error": "Invalid role"})
 
 }
+
+func getAllService(ctx *fiber.Ctx, user entityUser.UserResponse) error {
+	return nil
+}
+
+func getByIDService(ctx *fiber.Ctx, user entityUser.UserResponse, fid uuid.UUID) error {
+	return nil
+}
+
+func getByUserIDService(ctx *fiber.Ctx, user entityUser.UserResponse, fid uuid.UUID) error {
+	return nil
+}
