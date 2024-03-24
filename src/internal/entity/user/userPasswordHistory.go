@@ -1,6 +1,8 @@
 package entity
 
-import "time"
+import (
+	"time"
+)
 
 // represents record in database
 type UserPasswordHistroy struct {

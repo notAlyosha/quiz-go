@@ -18,7 +18,7 @@ func SetupUserRouter(api fiber.Router) {
 	api.Get("/user", middleware.DeserializeUser, geyByAuthData)
 	api.Get("/user", middleware.DeserializeUser, getAll)
 	api.Get("/user/:fid", middleware.DeserializeUser, getById)
-	api.Get("/user/:fid/groups", middleware.DeserializeUser, getGroupById)
+	api.Get("/user/:fid/groups", middleware.DeserializeUser, getByGroupId)
 	api.Get("/user/:fid/role", middleware.DeserializeUser, getByRoleId)
 
 }
@@ -93,7 +93,7 @@ func getById(ctx *fiber.Ctx) error {
 
 }
 
-func getGroupById(ctx *fiber.Ctx) error {
+func getByGroupId(ctx *fiber.Ctx) error {
 	fid := ctx.Params("fid")
 	user := ctx.Locals("user").(entityUser.UserResponse)
 
@@ -103,11 +103,11 @@ func getGroupById(ctx *fiber.Ctx) error {
 		return ctx.Status(fiber.StatusInternalServerError).JSON("")
 	}
 
-	return getGroupByIdService(ctx, user, ufid)
+	return getByGroupIdService(ctx, user, ufid)
 
 }
 
 func getByRoleId(ctx *fiber.Ctx) error {
-	return getByRoleIdService()
+	return getByRoleIdService("")
 
 }

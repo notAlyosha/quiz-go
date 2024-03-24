@@ -5,12 +5,13 @@ import (
 	"time"
 
 	validation "github.com/go-ozzo/ozzo-validation"
+	"github.com/google/uuid"
 )
 
 // represents record in database
 type Session struct {
 	ID            int
-	FrontID       int
+	FrontID       uuid.UUID
 	TeacherID     int
 	QuizID        int
 	StatusID      int
@@ -22,7 +23,6 @@ type Session struct {
 }
 
 type SessionInput struct {
-	FrontID       int
 	TeacherID     int
 	QuizID        int
 	StatusID      int
@@ -34,7 +34,6 @@ type SessionInput struct {
 
 func (s *SessionInput) Check() error {
 	return validation.ValidateStruct(s,
-		validation.Field(s.FrontID, validation.Required),
 		validation.Field(s.TeacherID, validation.Required),
 		validation.Field(s.QuizID, validation.Required),
 		validation.Field(s.StatusID, validation.Required),

@@ -248,7 +248,7 @@ func deleteUserFromStorage(FID string) error {
 	return err
 }
 
-func userByIdFromStorage(FID uuid.UUID) (entityUser.User, error) {
+func userByFIDFromStorage(FID uuid.UUID) (entityUser.User, error) {
 	foundUser := entityUser.User{}
 
 	err := dbcontext.GetDB().Select().Where(dbx.HashExp{"front_id": FID}).One(&foundUser)

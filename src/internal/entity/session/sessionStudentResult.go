@@ -5,10 +5,12 @@ import (
 	"time"
 
 	validation "github.com/go-ozzo/ozzo-validation"
+	"github.com/google/uuid"
 )
 
 type SessionStudentResult struct {
 	ID               int
+	FrontID          uuid.UUID
 	SessionID        int
 	StudentID        int
 	SummaryMark      sql.NullInt32
@@ -19,6 +21,7 @@ type SessionStudentResult struct {
 }
 
 type SessionStudentResultInput struct {
+	FrontID          uuid.UUID
 	SessionID        int
 	StudentID        int
 	SummaryMark      sql.NullInt32

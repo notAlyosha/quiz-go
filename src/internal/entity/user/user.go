@@ -11,7 +11,7 @@ import (
 // represents record in database
 type User struct {
 	ID        int            `json:"ID"`
-	FrontID   string         `json:"front_id"`
+	FrontID   uuid.UUID      `json:"front_id"`
 	Role      string         `json:"role"`
 	LogoURL   sql.NullString `json:"LogoURL"`
 	IsDeleted bool           `json:"IsDeleted"`
@@ -23,12 +23,27 @@ type SignInInput struct {
 	Password string `json:"password"`
 }
 
+func (si SignInInput) Check() error {
+	return validation.ValidateStruct(si,
+		validation.Field(si.Email, validation.Required, is.Email),
+		validation.Field(si.Password, validation.Required, validation.Length(5, 30)),
+	)
+}
+
 // data that going to client
 type UserResponse struct {
 	FrontID uuid.UUID `json:"front_id,omitempty"`
 	Name    string    `json:"name,omitempty"`
 	Email   string    `json:"email,omitempty"`
 	Role    string    `json:"role,omitempty"`
+}
+
+func (ur UserResponse) Check() error {
+	return validation.ValidateStruct(ur,
+		validation.Field(ur.FrontID, validation.Required),
+		validation.Field(ur.Role, validation.Required),
+		validation.Field(ur.Email, validation.Required, is.Email),
+	)
 }
 
 type UserCreate struct {

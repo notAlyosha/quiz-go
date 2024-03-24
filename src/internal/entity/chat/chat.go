@@ -1,9 +1,13 @@
 package entity
 
-import validation "github.com/go-ozzo/ozzo-validation"
+import (
+	validation "github.com/go-ozzo/ozzo-validation"
+	"github.com/google/uuid"
+)
 
 type Chat struct {
 	ID              int
+	FrontID         uuid.UUID
 	AdministratorID int
 	Description     string
 	InviteLink      string
@@ -13,6 +17,7 @@ type Chat struct {
 }
 
 type ChatInput struct {
+	FrontID         uuid.UUID
 	AdministratorID int
 	Description     string
 	InviteLink      string

@@ -203,7 +203,7 @@ func deleteService(ctx *fiber.Ctx, user entityUser.UserResponse, deleted_user_fi
 }
 
 func getByIdService(ctx *fiber.Ctx, fid uuid.UUID) error {
-	foundUser, err := userByIdFromStorage(fid)
+	foundUser, err := userByFIDFromStorage(fid)
 
 	if err == nil {
 		return ctx.Status(fiber.StatusNotFound).JSON(fiber.Map{"Error": "Provided id is not exsist"})
@@ -211,13 +211,14 @@ func getByIdService(ctx *fiber.Ctx, fid uuid.UUID) error {
 
 	clientUser := entityUser.UserResponse{}
 
-	clientUser.FrontID = uuid.FromStringOrNil(foundUser.FrontID)
+	clientUser.FrontID = foundUser.FrontID
+
 	clientUser.Role = foundUser.Role
 
 	return ctx.Status(fiber.StatusFound).JSON(clientUser)
 }
 
-func getGroupByIdService(ctx *fiber.Ctx, user entityUser.UserResponse, fid uuid.UUID) error {
+func getByGroupIdService(ctx *fiber.Ctx, user entityUser.UserResponse, group_id uuid.UUID) error {
 	// variable that stores users in group with fid
 	// todo get data from db
 	var users []entityUser.User
@@ -240,6 +241,6 @@ func getGroupByIdService(ctx *fiber.Ctx, user entityUser.UserResponse, fid uuid.
 	return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"Error": "Invalid role"})
 
 }
-func getByRoleIdService() error {
+func getByRoleIdService(role string) error {
 	return nil
 }
